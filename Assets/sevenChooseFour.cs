@@ -907,31 +907,31 @@ public class sevenChooseFour : MonoBehaviour
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} press <1/2/3/4> [Presses the specified button]";
+    private readonly string TwitchHelpMessage = @"!{0} press <1/2/3/4> [Presses the specified button]. You can also string moves together i.e. press 1 3 2 4 or press 1,3,2,4.";
 #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
     {
-        string[] parameters = command.Split(' ');
+        string[] parameters = command.Split(' ',',');
         if (Regex.IsMatch(parameters[0], @"^\s*press\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
-            if (parameters.Length == 2)
+            for(int i = 1; i < parameters.Length; i++)
             {
-                if (inputIsValid(parameters[1]))
+                if (inputIsValid(parameters[i]))
                 {
                     yield return null;
-                    if (parameters[1].ToLower().Equals("1"))
+                    if (parameters[i].ToLower().Equals("1"))
                     {
                         buttons[0].OnInteract();
                     }
-                    else if (parameters[1].ToLower().Equals("2"))
+                    else if (parameters[i].ToLower().Equals("2"))
                     {
                         buttons[1].OnInteract();
                     }
-                    else if (parameters[1].ToLower().Equals("3"))
+                    else if (parameters[i].ToLower().Equals("3"))
                     {
                         buttons[2].OnInteract();
                     }
-                    else if (parameters[1].ToLower().Equals("4"))
+                    else if (parameters[i].ToLower().Equals("4"))
                     {
                         buttons[3].OnInteract();
                     }

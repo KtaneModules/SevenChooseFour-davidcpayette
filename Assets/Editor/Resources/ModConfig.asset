@@ -25,6 +25,9 @@ MonoBehaviour:
 
     Includes TP support!
 
+
+    HTML Manual can be found here: https://ktane.timwi.de/HTML/Seven%20Choose%20Four.html
+
 '
   version: 1.5
   outputFolder: build
