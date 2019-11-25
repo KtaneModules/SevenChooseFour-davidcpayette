@@ -685,6 +685,7 @@ public class sevenChooseFour : MonoBehaviour
         int numprim = 0;
         int numsec = 0;
         if (key < 3 | key == 6) numprim++;
+        if (key >= 3) numsec++;
         string colors = manColorNames[key];
         string solleft = "";
         string solright = "";
@@ -694,10 +695,10 @@ public class sevenChooseFour : MonoBehaviour
             {
                 colors += ledColorNames[ledindex[i]];
                 if (ledindex[i] % 2 == 0) numprim++;
+                if (ledindex[i] % 2 != 0 | ledindex[i] == 6) numsec++;
             }
         }
-        if (colors.Contains("W")) numsec = 5 - numprim;
-        else numsec = 4 - numprim;
+
         Debug.LogFormat("[SevenChooseFour #{0}] Cyan Puzzle: Colors are " + colors,moduleId);
         Debug.LogFormat("[SevenChooseFour #{0}] Cyan Puzzle: There are " + numprim + "P and " + numsec + "S",moduleId);
         switch (numprim)
