@@ -22,7 +22,10 @@ MonoBehaviour:
 
     Module by Theta
 
+
+    Includes TP support!
+
 '
-  version: 1.0
+  version: 1.5
   outputFolder: build
   previewImage: {fileID: 2800000, guid: cd9921505e65e0f46876282911b551a1, type: 3}

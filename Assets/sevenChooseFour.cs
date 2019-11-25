@@ -32,7 +32,7 @@ public class sevenChooseFour : MonoBehaviour
     private int numkey;
     private bool[] flashcode;
 
-    private List<int> ledfunction = new List<int>() { 0, 1, 2, 3 }; //0: morse 1: tap 2: colors 3: number
+    private List<int> ledfunction = new List<int>() {0,1,2,3}; //0: morse 1: tap 2: colors 3: number
     private List<int> ledfunctionshuffled = new List<int>();
 
     private bool lightsready = false;
@@ -96,7 +96,7 @@ public class sevenChooseFour : MonoBehaviour
         ledindex.Add(UnityEngine.Random.Range(0, 7));
         for (int i = 0; i < 4; i++)
         {
-            leds[i].material = ledColors[ledindex.ToArray()[i]];
+            leds[i].material = ledColors[ledindex[i]];
         }
     }
 
@@ -119,6 +119,7 @@ public class sevenChooseFour : MonoBehaviour
         flashcode = NumToFlashArray(numkey);
 
         ledfunctionshuffled = ledfunction.OrderBy(x => UnityEngine.Random.value).ToList();
+        //Debug.Log("order of led functions " + ListToString(ledfunctionshuffled));
         lightsready = true;
 
         Debug.LogFormat("[SevenChooseFour #{0}] Morse key is " + morsekeyletter + " " + MORSE_SYMBOLS[morsekeyindex],moduleId);
@@ -129,13 +130,15 @@ public class sevenChooseFour : MonoBehaviour
             ledcolorstring += ledColorNames[ledindex.ToArray()[i]];
         }
         Debug.LogFormat("[SevenChooseFour #{0}] Color seq is " + ledcolorstring,moduleId);
-        Debug.LogFormat("[SevenChooseFour #{0}] Number key is " + numkey,moduleId);
+        Debug.LogFormat("[SevenChooseFour #{0}] Number key is " + numkey + "=" + manColorNames[numkey-1],moduleId);
         List<Buttoninfo> buttoninfolist = DefineButtons();
-        int keysoffset = ledfunctionshuffled[2];
-
+        //int keysoffset = ledfunctionshuffled[2];
+        int keysoffset = ledfunctionshuffled.IndexOf(2);
+        //Debug.Log("keyoffset " + keysoffset);
         for (int i = 0; i < 4; i++)
         {
             keys[i] = buttoninfolist[(i + keysoffset) % 4].buttonoutputkey;
+           // Debug.Log("keys " + keys[i] + " from location " + (i + keysoffset) % 4);
         }
     }
 
@@ -368,7 +371,7 @@ public class sevenChooseFour : MonoBehaviour
             timer_morse -= Time.deltaTime;
             if (timer_morse < 0)
             {
-                int morseled = ledfunctionshuffled[0];
+                int morseled = ledfunctionshuffled.IndexOf(0);
                 leds[morseled].material = morse[morsetimer] ? ledColors[ledindex[morseled]] : blackled;
                 morsetimer = (morsetimer + 1) % morse.Length;
                 timer_morse = DOT_LENGTH;
@@ -377,7 +380,7 @@ public class sevenChooseFour : MonoBehaviour
             timer_tap -= Time.deltaTime;
             if (timer_tap < 0)
             {
-                int tapled = ledfunctionshuffled[1];
+                int tapled = ledfunctionshuffled.IndexOf(1);
                 leds[tapled].material = tapcode[taptimer] ? ledColors[ledindex[tapled]] : blackled;
                 taptimer = (taptimer + 1) % tapcode.Length;
                 timer_tap = DOT_LENGTH;
@@ -386,7 +389,7 @@ public class sevenChooseFour : MonoBehaviour
             timer_color -= Time.deltaTime;
             if (timer_color < 0)
             { 
-                int colorled = ledfunctionshuffled[2];
+                int colorled = ledfunctionshuffled.IndexOf(2);
                 
                 leds[colorled].material = colortimer < ledindex.Count ? ledColors[ledindex[colortimer]] : blackled;
                 colortimer = (colortimer + 1) % (ledindex.Count + 1);
@@ -397,7 +400,7 @@ public class sevenChooseFour : MonoBehaviour
             timer_num -= Time.deltaTime;
             if (timer_num < 0)
             {
-                int numled = ledfunctionshuffled.ToArray()[3];
+                int numled = ledfunctionshuffled.IndexOf(3);
                 leds[numled].material = flashcode[numtimer] ? ledColors[ledindex[numled]] : blackled;
                 numtimer = (numtimer + 1) % flashcode.Length;
                 timer_num = DOT_LENGTH;
@@ -558,7 +561,11 @@ public class sevenChooseFour : MonoBehaviour
         int numaabat = bomb.GetBatteryCount(Battery.AA);
         int numdbat = bomb.GetBatteryCount(Battery.D);
         char col = 'F';
-        int row = key % 5;
+        int row = key;
+        while (row > 5) row -= 5;
+
+        row = row - 1;
+        
         
         foreach (char c in bomb.GetSerialNumberLetters())
         {
@@ -673,12 +680,12 @@ public class sevenChooseFour : MonoBehaviour
     string SolveCyan(string keyname, int seqnum)
     {
         Debug.LogFormat("[SevenChooseFour #{0}] Cyan Puzzle: Key is " + keyname,moduleId);
-        int key = SYMBOLS.IndexOf(keyname) + 1;
+        int key = SYMBOLS.IndexOf(keyname);
         key = key % 7;
         int numprim = 0;
         int numsec = 0;
         if (key < 3 | key == 6) numprim++;
-        string colors = "";
+        string colors = manColorNames[key];
         string solleft = "";
         string solright = "";
         for(int i = 0; i < 4; i++)
@@ -691,7 +698,7 @@ public class sevenChooseFour : MonoBehaviour
         }
         if (colors.Contains("W")) numsec = 5 - numprim;
         else numsec = 4 - numprim;
-        Debug.LogFormat("[SevenChooseFour #{0}] Cyan Puzzle: Colors are " + manColorNames[key] + colors,moduleId);
+        Debug.LogFormat("[SevenChooseFour #{0}] Cyan Puzzle: Colors are " + colors,moduleId);
         Debug.LogFormat("[SevenChooseFour #{0}] Cyan Puzzle: There are " + numprim + "P and " + numsec + "S",moduleId);
         switch (numprim)
         {
@@ -702,7 +709,7 @@ public class sevenChooseFour : MonoBehaviour
                 solleft = "13";
                 break;
             case 2:
-                solleft = "21";
+                solleft = "13";
                 break;
             case 3:
                 solleft = "42";
@@ -743,19 +750,13 @@ public class sevenChooseFour : MonoBehaviour
         List<int> distances = new List<int>() { 24, 4, 11, 14, 22 };
         List<string> letters = new List<string>() { "Y", "E", "L", "L", "O", "W"};
         int index = -1;
-        index = key != "X" ? FindClosestIndex(pos1, distances) : 0;
-        if (index < 3)
-        {
-            letters.RemoveAt(index);
-        }
-        else
-        {
-            letters.RemoveAt(index + 1);
-        }
-        if (index != 2) distances.RemoveAt(index);
+        index = FindClosestLetter(pos1, distances);
+        if (index != 11) distances.Remove(index);
+        letters.Remove(SYMBOLS[index].ToString());
         pos1 = 25 - pos1;
-        index = FindClosestIndex(pos1, distances);
-        letters.RemoveAt(index);
+        index = FindClosestLetter(pos1, distances);
+        //letters.RemoveAt(index);
+        letters.Remove(SYMBOLS[index].ToString());
         List<string> newletters = new List<string>() { "A", "A", "A", "A" };
         int shift = (seqnum + 1)%4;
         for(int i = 0; i < 4; i++)
@@ -772,10 +773,17 @@ public class sevenChooseFour : MonoBehaviour
             new Item {key = 3, value = SYMBOLS.IndexOf(newletters[3])},
         };
         var sorted = letterindexpairs.OrderBy(x => x.value).ToList();
+        int digit = 1;
+        foreach(Item i in sorted)
+        {
+            i.value = digit;
+            digit++;
+        }
+        sorted = sorted.OrderBy(x => x.key).ToList();
         string result = "";
         foreach(Item i in sorted)
         {
-            result += (i.key + 1).ToString();
+            result += (i.value).ToString();
         }
         return result;
     }
@@ -786,22 +794,28 @@ public class sevenChooseFour : MonoBehaviour
         public int value { get; set; }
     }
 
-    int FindClosestIndex(int input, List<int> l)
+    int FindClosestLetter(int input, List<int> l)
     {
         int smalld = 100000;
         int index = -1;
-
-        for (int i = 0; i < l.Count(); i++)
+        List<Item> sortdist = new List<Item>();
+        for(int i = 0; i < l.Count; i++)
         {
-            int diff = Math.Abs(input - l[i]);
-            if (diff <= smalld)
-            {
-                smalld = diff;
-                index = i;
-            }
+            sortdist.Add(new Item { key = i, value = l[i] });
         }
-
-        return index;
+        sortdist = sortdist.OrderBy(x => x.value).ToList();
+        int step = 0;
+        foreach(Item i in sortdist)
+        {
+            int dist = Math.Abs(input - i.value);
+            if(dist <= smalld)
+            {
+                smalld = dist;
+                index = step;
+            }
+            step++;
+        }
+        return sortdist[index].value;
     }
 
     int FindMaxDirection(int row, int col, int maxrows, int maxcols, int bias)
@@ -871,6 +885,13 @@ public class sevenChooseFour : MonoBehaviour
     {
         string str = "";
         foreach (var s in l) str += s.ToString();
+        return str;
+    }
+
+    string ListToString(List<Item> l)
+    {
+        string str = "";
+        foreach (var s in l) str += s.value.ToString();
         return str;
     }
 
