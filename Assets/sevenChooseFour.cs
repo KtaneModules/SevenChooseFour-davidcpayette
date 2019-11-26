@@ -83,7 +83,7 @@ public class sevenChooseFour : MonoBehaviour
                 cursol += " ";
             }
         }
-        Debug.LogFormat("[SevenChooseFour #{0}] Stage " + (stage + 1).ToString() + " solution is " + cursol, moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Stage " + (stage + 1).ToString() + " solution is " + cursol, moduleId);
     }
 
     void PickLedColor()
@@ -122,15 +122,15 @@ public class sevenChooseFour : MonoBehaviour
         //Debug.Log("order of led functions " + ListToString(ledfunctionshuffled));
         lightsready = true;
 
-        Debug.LogFormat("[SevenChooseFour #{0}] Morse key is " + morsekeyletter + " " + MORSE_SYMBOLS[morsekeyindex],moduleId);
-        Debug.LogFormat("[SevenChooseFour #{0}] Tap code key is " + tapkey,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Morse key is " + morsekeyletter + " " + MORSE_SYMBOLS[morsekeyindex],moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Tap code key is " + tapkey,moduleId);
         string ledcolorstring = "";
         for(int i = 0; i < ledindex.Count; i++)
         {
             ledcolorstring += ledColorNames[ledindex.ToArray()[i]];
         }
-        Debug.LogFormat("[SevenChooseFour #{0}] Color seq is " + ledcolorstring,moduleId);
-        Debug.LogFormat("[SevenChooseFour #{0}] Number key is " + numkey + "=" + manColorNames[numkey-1],moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Color seq is " + ledcolorstring,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Number key is " + numkey + "=" + manColorNames[numkey-1],moduleId);
         List<Buttoninfo> buttoninfolist = DefineButtons();
         //int keysoffset = ledfunctionshuffled[2];
         int keysoffset = ledfunctionshuffled.IndexOf(2);
@@ -143,7 +143,7 @@ public class sevenChooseFour : MonoBehaviour
             keyorder += keys[i];
 
         }
-        Debug.LogFormat("[SevenChooseFour #{0}] The correct key order is " + keyorder, moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] The correct key order is " + keyorder, moduleId);
     }
 
     private class Buttoninfo
@@ -227,7 +227,7 @@ public class sevenChooseFour : MonoBehaviour
                         whitesols += " ";
                         colname++;
                     }
-                    Debug.LogFormat("[SevenChooseFour #{0}] White solutions are: " + whitesols,moduleId);
+                    Debug.LogFormat("[Seven Choose Four #{0}] White solutions are: " + whitesols,moduleId);
                     solution.Add("W");
                     break;
             }
@@ -237,7 +237,7 @@ public class sevenChooseFour : MonoBehaviour
 
     private List<string> FillWhiteSolution(string key, int seqnum)
     {
-        Debug.LogFormat("[SevenChooseFour #{0}] White Puzzle: Key is " + key,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] White Puzzle: Key is " + key,moduleId);
         List<string> whitesols = new List<string>();
         whitesols.Add(SolveRed(key, seqnum));
         whitesols.Add(SolveGreen(key, seqnum));
@@ -258,7 +258,7 @@ public class sevenChooseFour : MonoBehaviour
         audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, this.transform);
         string buttonname = button.name;
         button.AddInteractionPunch();
-        Debug.LogFormat("[SevenChooseFour #{0}] Button pressed is " + getButtonValue(buttonname).ToString(),moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Button pressed is " + getButtonValue(buttonname).ToString(),moduleId);
         
         if (moduleReady)
         {            
@@ -277,7 +277,7 @@ public class sevenChooseFour : MonoBehaviour
                         module.HandleStrike();
                         buttons[stage].GetComponent<MeshRenderer>().material = ledColors[4];
                         numpresses = -1;
-                        Debug.LogFormat("[SevenChooseFour #{0}] Incorrect, you entered " + ListToString(buttonspressed) + ", stage reset.", moduleId);
+                        Debug.LogFormat("[Seven Choose Four #{0}] Incorrect, you entered " + ListToString(buttonspressed) + ", stage reset.", moduleId);
                     }
                 }
                 else
@@ -291,7 +291,7 @@ public class sevenChooseFour : MonoBehaviour
                         module.HandleStrike();
                         buttons[stage].GetComponent<MeshRenderer>().material = ledColors[4];
                         numpresses = -1;
-                        Debug.LogFormat("[SevenChooseFour #{0}] Incorrect, you entered " + ListToString(buttonspressed) + ",stage reset.", moduleId);
+                        Debug.LogFormat("[Seven Choose Four #{0}] Incorrect, you entered " + ListToString(buttonspressed) + ",stage reset.", moduleId);
                     }
                 }
                 buttonspressed.Clear();
@@ -318,7 +318,7 @@ public class sevenChooseFour : MonoBehaviour
         else
         {
             string stagesol = "";
-            Debug.LogFormat("[SevenChooseFour #{0}] Stage Passed", moduleId);
+            Debug.LogFormat("[Seven Choose Four #{0}] Stage Passed", moduleId);
             if (solution[stage] == "W")
             {
                 foreach (string s in whitesolution)
@@ -331,7 +331,7 @@ public class sevenChooseFour : MonoBehaviour
             {
                 stagesol = solution[stage];
             }
-            Debug.LogFormat("[SevenChooseFour #{0}] Next stage solution is " + stagesol, moduleId);
+            Debug.LogFormat("[Seven Choose Four #{0}] Next stage solution is " + stagesol, moduleId);
         }
     }
 
@@ -497,7 +497,7 @@ public class sevenChooseFour : MonoBehaviour
     {
         int key = SYMBOLS.IndexOf(keyletter) + 1;
         int num_rports = bomb.GetPortCount("StereoRCA") + bomb.GetPortCount("RJ45") + bomb.GetPortCount("Parallel") + bomb.GetPortCount("Serial");
-        Debug.LogFormat("[SevenChooseFour #{0}] Red Puzzle: Key is " + keyletter,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Red Puzzle: Key is " + keyletter,moduleId);
         key = key + num_rports;
         key = key % 100;
         int tensdigit = key / 10;
@@ -505,7 +505,7 @@ public class sevenChooseFour : MonoBehaviour
         bool tensdigitbool = tensdigit % 2 != 0;
         bool onesdigitbool = onesdigit % 2 != 0;
         bool solution = false;
-        Debug.LogFormat("[SevenChooseFour #{0}] Red Puzzle: Gate used is " + gates[seqnum],moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Red Puzzle: Gate used is " + gates[seqnum],moduleId);
         switch (seqnum)
         {
             case 0: //NOR
@@ -538,14 +538,14 @@ public class sevenChooseFour : MonoBehaviour
     {
         int key = SYMBOLS.IndexOf(keyname) + 1;
         int num_g7 = bomb.GetSerialNumber().Count(x => x == 'G' | x == '7');
-        Debug.LogFormat("[SevenChooseFour #{0}] Green Puzzle: Key is " + keyname,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Green Puzzle: Key is " + keyname,moduleId);
         key = (key) % 100;
         int tensdigit = key / 10;
         int onesdigit = key % 10;
         int a = (tensdigit + num_g7) % 4;
         int b = (onesdigit + num_g7) % 4;
         int sum = linesgrid[a,a] + linesgrid[a,b] + linesgrid[b,a] + linesgrid[b,b];
-        Debug.LogFormat("[SevenChooseFour #{0}] Green Puzzle: Sum of the lines is " + sum,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Green Puzzle: Sum of the lines is " + sum,moduleId);
         if (sum % 2 == 0) return logSolution("Green",Reverse(greenodd[seqnum]));
         else return logSolution("Green",greenodd[seqnum]);
     }
@@ -558,7 +558,7 @@ public class sevenChooseFour : MonoBehaviour
     
     string SolveBlue(string keyname, int seqnum)
     {
-        Debug.LogFormat("[SevenChooseFour #{0}] Blue Puzzle: Key is " + keyname,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Blue Puzzle: Key is " + keyname,moduleId);
         int key = SYMBOLS.IndexOf(keyname) + 1;
         int numaabat = bomb.GetBatteryCount(Battery.AA);
         int numdbat = bomb.GetBatteryCount(Battery.D);
@@ -586,7 +586,7 @@ public class sevenChooseFour : MonoBehaviour
         }
         col = SYMBOLS.ToCharArray()[row];
     foundchar:
-        Debug.LogFormat("[SevenChooseFour #{0}] Blue Puzzle: Starting Table Position is " + "(" + col + "," + (row + 1).ToString() + ")",moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Blue Puzzle: Starting Table Position is " + "(" + col + "," + (row + 1).ToString() + ")",moduleId);
         int colnum = SYMBOLS.IndexOf(col);
         int dir = FindMaxDirection(row, colnum, 5, 5, 3);
         switch (dir)
@@ -601,7 +601,7 @@ public class sevenChooseFour : MonoBehaviour
                 break;
         }
         dir = FindMaxDirection(row, colnum, 5, 5, 1);
-        Debug.LogFormat("[SevenChooseFour #{0}] Blue Puzzle: Intermediate Table Position is " + "(" + SYMBOLS[colnum] + "," + (row+1).ToString() + ")",moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Blue Puzzle: Intermediate Table Position is " + "(" + SYMBOLS[colnum] + "," + (row+1).ToString() + ")",moduleId);
         switch (dir)
         {
             case 0:
@@ -613,7 +613,7 @@ public class sevenChooseFour : MonoBehaviour
                 row = MoveDirection(row, numdbat, 4, dir == 1);
                 break;
         }
-        Debug.LogFormat("[SevenChooseFour #{0}] Blue Puzzle: Final Table Position is " + "(" + SYMBOLS[colnum] + "," + (row + 1).ToString() + ")",moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Blue Puzzle: Final Table Position is " + "(" + SYMBOLS[colnum] + "," + (row + 1).ToString() + ")",moduleId);
 
         return logSolution("Blue",buttonordergrid[row, colnum]);
     }
@@ -631,7 +631,7 @@ public class sevenChooseFour : MonoBehaviour
     {
         int keyvalue = SYMBOLS.IndexOf(key) + 1;
         if (keyvalue == 26) keyvalue = 1;
-        Debug.LogFormat("[SevenChooseFour #{0}] Magenta Puzzle: Key is " + key,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Magenta Puzzle: Key is " + key,moduleId);
 
         string letters = "";
         char[] s = new char[4];
@@ -643,7 +643,7 @@ public class sevenChooseFour : MonoBehaviour
             if (c < 65) s[i] = (char)(c + 17);
             else s[i] = c;
         }
-        Debug.LogFormat("[SevenChooseFour #{0}] Magenta Puzzle: Letters to find are " + new string(s),moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Magenta Puzzle: Letters to find are " + new string(s),moduleId);
         int keyrow = -1;
         int keycol = -1;
         for (int row = 0; row < 5; row++)
@@ -681,7 +681,7 @@ public class sevenChooseFour : MonoBehaviour
 
     string SolveCyan(string keyname, int seqnum)
     {
-        Debug.LogFormat("[SevenChooseFour #{0}] Cyan Puzzle: Key is " + keyname,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Cyan Puzzle: Key is " + keyname,moduleId);
         int key = SYMBOLS.IndexOf(keyname);
         key = key % 7;
         int numprim = 0;
@@ -701,8 +701,8 @@ public class sevenChooseFour : MonoBehaviour
             }
         }
 
-        Debug.LogFormat("[SevenChooseFour #{0}] Cyan Puzzle: Colors are " + colors,moduleId);
-        Debug.LogFormat("[SevenChooseFour #{0}] Cyan Puzzle: There are " + numprim + "P and " + numsec + "S",moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Cyan Puzzle: Colors are " + colors,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Cyan Puzzle: There are " + numprim + "P and " + numsec + "S",moduleId);
         switch (numprim)
         {
             case 0:
@@ -749,7 +749,7 @@ public class sevenChooseFour : MonoBehaviour
     string SolveYellow(string key, int seqnum)
     {
         int pos1 = SYMBOLS.IndexOf(key);
-        Debug.LogFormat("[SevenChooseFour #{0}] Yellow Puzzle: Key is " + key,moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Yellow Puzzle: Key is " + key,moduleId);
         List<int> distances = new List<int>() { 24, 4, 11, 14, 22 };
         List<string> letters = new List<string>() { "Y", "E", "L", "L", "O", "W"};
         int index = -1;
@@ -767,7 +767,7 @@ public class sevenChooseFour : MonoBehaviour
             newletters[shift] = letters[i];
             shift = (shift + 1) % 4;
         }
-        Debug.LogFormat("[SevenChooseFour #{0}] Yellow Puzzle: Shifted Letters: " + ListToString(newletters),moduleId);
+        Debug.LogFormat("[Seven Choose Four #{0}] Yellow Puzzle: Shifted Letters: " + ListToString(newletters),moduleId);
         var letterindexpairs = new List<Item>()
         {
             new Item {key = 0, value = SYMBOLS.IndexOf(newletters[0])},
@@ -900,7 +900,7 @@ public class sevenChooseFour : MonoBehaviour
 
     string logSolution(string name, string sol)
     {
-        Debug.LogFormat("[SevenChooseFour #{0}] {1} solution is: " + sol, moduleId,name);
+        Debug.LogFormat("[Seven Choose Four #{0}] {1} solution is: " + sol, moduleId,name);
         return sol;
     }
 
