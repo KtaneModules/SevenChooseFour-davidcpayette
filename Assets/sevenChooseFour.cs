@@ -135,11 +135,15 @@ public class sevenChooseFour : MonoBehaviour
         //int keysoffset = ledfunctionshuffled[2];
         int keysoffset = ledfunctionshuffled.IndexOf(2);
         //Debug.Log("keyoffset " + keysoffset);
+        string keyorder = "";
         for (int i = 0; i < 4; i++)
         {
             keys[i] = buttoninfolist[(i + keysoffset) % 4].buttonoutputkey;
-           // Debug.Log("keys " + keys[i] + " from location " + (i + keysoffset) % 4);
+            // Debug.Log("keys " + keys[i] + " from location " + (i + keysoffset) % 4);
+            keyorder += keys[i];
+
         }
+        Debug.LogFormat("[SevenChooseFour #{0}] The correct key order is " + keyorder, moduleId);
     }
 
     private class Buttoninfo
@@ -188,44 +192,42 @@ public class sevenChooseFour : MonoBehaviour
             switch (ledColorNames[ledindex.ToArray()[i]])
             {
                 case "R":
-                    sol = SolveRed(keys[i], i);
-                    Debug.LogFormat("[SevenChooseFour #{0}] Red solution is : " + sol,moduleId);
+                    sol = SolveRed(keys[i], i);                    
                     solution.Add(sol);
                     break;
                 case "G":
-                    sol = SolveGreen(keys[i],i);
-                    Debug.LogFormat("[SevenChooseFour #{0}] Green solution is : " + sol,moduleId);
+                    sol = SolveGreen(keys[i],i);                    
                     solution.Add(sol);
                     break;
                 case "B":
-                    sol = SolveBlue(keys[i],i);
-                    Debug.LogFormat("[SevenChooseFour #{0}] Blue solution is : " + sol,moduleId);
+                    sol = SolveBlue(keys[i],i);                    
                     solution.Add(sol);
                     break;
                 case "M":
-                    sol = SolveMagenta(keys[i],i);
-                    Debug.LogFormat("[SevenChooseFour #{0}] Magenta solution is : " + sol,moduleId);
+                    sol = SolveMagenta(keys[i],i);                   
                     solution.Add(sol);
                     break;
                 case "C":
-                    sol = SolveCyan(keys[i],i);
-                    Debug.LogFormat("[SevenChooseFour #{0}] Cyan solution is : " + sol,moduleId);
+                    sol = SolveCyan(keys[i],i);                    
                     solution.Add(sol);
                     break;
                 case "Y":
-                    sol = SolveYellow(keys[i],i);
-                    Debug.LogFormat("[SevenChooseFour #{0}] Yellow solution is : " + sol,moduleId);
+                    sol = SolveYellow(keys[i],i);                  
                     solution.Add(sol);
                     break;
                 case "W":
                     whitesolution = FillWhiteSolution(keys[i], i);
                     string whitesols = "";
+                    int colname = 0;
                     foreach(string s in whitesolution)
                     {
+                        whitesols += manColorNames[colname];
+                        whitesols += ": ";
                         whitesols += s;
                         whitesols += " ";
+                        colname++;
                     }
-                    Debug.LogFormat("[SevenChooseFour #{0}] White solutions are " + whitesols,moduleId);
+                    Debug.LogFormat("[SevenChooseFour #{0}] White solutions are: " + whitesols,moduleId);
                     solution.Add("W");
                     break;
             }
@@ -519,7 +521,7 @@ public class sevenChooseFour : MonoBehaviour
                 solution = tensdigitbool & onesdigitbool;
                 break;             
         }
-        return solution ? redtrue[seqnum] : redfalse[seqnum];
+        return logSolution("Red",solution ? redtrue[seqnum] : redfalse[seqnum]);
     }
 
     private int[,] linesgrid =
@@ -544,8 +546,8 @@ public class sevenChooseFour : MonoBehaviour
         int b = (onesdigit + num_g7) % 4;
         int sum = linesgrid[a,a] + linesgrid[a,b] + linesgrid[b,a] + linesgrid[b,b];
         Debug.LogFormat("[SevenChooseFour #{0}] Green Puzzle: Sum of the lines is " + sum,moduleId);
-        if (sum % 2 == 0) return Reverse(greenodd[seqnum]);
-        else return greenodd[seqnum];
+        if (sum % 2 == 0) return logSolution("Green",Reverse(greenodd[seqnum]));
+        else return logSolution("Green",greenodd[seqnum]);
     }
 
     private string[,] buttonordergrid = { {"1234", "1243", "2134", "2143", "3124" },
@@ -613,7 +615,7 @@ public class sevenChooseFour : MonoBehaviour
         }
         Debug.LogFormat("[SevenChooseFour #{0}] Blue Puzzle: Final Table Position is " + "(" + SYMBOLS[colnum] + "," + (row + 1).ToString() + ")",moduleId);
 
-        return buttonordergrid[row, colnum];
+        return logSolution("Blue",buttonordergrid[row, colnum]);
     }
 
     private int[,] lettergrid =
@@ -674,7 +676,7 @@ public class sevenChooseFour : MonoBehaviour
                 }
             }
         }
-        return ListToString(dist.ToList());
+        return logSolution("Magenta",ListToString(dist.ToList()));
     }
 
     string SolveCyan(string keyname, int seqnum)
@@ -741,7 +743,7 @@ public class sevenChooseFour : MonoBehaviour
             default:
                 return "NULL";
         }
-        return solleft + solright;
+        return logSolution("Cyan",solleft + solright);
     }
 
     string SolveYellow(string key, int seqnum)
@@ -786,7 +788,7 @@ public class sevenChooseFour : MonoBehaviour
         {
             result += (i.value).ToString();
         }
-        return result;
+        return logSolution("Yellow",result);
     }
 
     private class Item
@@ -894,6 +896,12 @@ public class sevenChooseFour : MonoBehaviour
         string str = "";
         foreach (var s in l) str += s.value.ToString();
         return str;
+    }
+
+    string logSolution(string name, string sol)
+    {
+        Debug.LogFormat("[SevenChooseFour #{0}] {1} solution is: " + sol, moduleId,name);
+        return sol;
     }
 
     //twitch plays
